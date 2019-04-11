@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import {getList} from './api'
+import UserCards from './components/UserCards/UserCards'
+import SearchFilter from './components/SearchFilter/SearchFilter'
+// import Sort from './components/Sort/Sort'
 import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
@@ -10,14 +13,17 @@ class App extends Component {
       list: null,
       data: null,
       isLoaded: false,
+      name: null,
+      change: null,
+      asc: false,
+      desc: false,
+      alien: false,
+      human: false,
       currentApiUrl: 'https://rickandmortyapi.com/api/character',
       nextApiUrl: '',
       prevApiData: '',
 
     };
-
-    // This binding is necessary to make `this` work in the callback
-    //this.handleClick = this.handleClick.bind(this);
   }
 
   handleClickNext = () => {
@@ -54,49 +60,62 @@ class App extends Component {
     })
   }
 
+  performSearch = ({ name, change, asc, desc, alien, human }) => {
+    //console.log(change)
+    this.setState({ name, change, asc, desc, alien, human })
+  }
+
   render() {
 
-    const {list, isLoaded} = this.state;
+    const {list, isLoaded, name, change, asc, desc, alien, human} = this.state;
+    let result = list;
+
+    if(name || change) {
+      result = list.filter(item => item.name.includes(name || change))
+    }
+    if(asc) {
+      result = list.sort((a, b) => a.name < b.name ? -1 : 1);
+    }
+    if(desc) {
+      result = list.sort((a, b) => a.name < b.name ? 1 : -1);
+    }
+    if(human) {
+      result = list.filter(item => item.species === 'Human');
+    }
+    if(alien) {
+      result = list.filter(item => item.species === 'Alien');
+    }
+
 
     if(!isLoaded) {
-      return <div>Loading...</div>
+      return (
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )
     } else {
         return (
           <div className="container">
             <div className="row">
-              <div className="col-12">
+              <div className="col-12 text-center">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-secondary m-2"
                   onClick={this.handleClickPrev}
                   disabled={!this.state.prevApiData}
                   >
-                  ← Prev
+                  ← Prev Page
                 </button>
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-secondary m-2"
                   onClick={this.handleClickNext}
                   disabled={!this.state.nextApiUrl}
                   >
-                  Next →
+                  Next Page →
                 </button>
+                <SearchFilter handleSearch={this.performSearch} />
               </div>
-                {list.map(item => {
-                  return <div
-                    key={item.id}
-                    className="col-md-3 col-sm-6 mb-3"
-                    >
-                    <div className="card">
-
-                      <img
-                        className="card-img-top"
-                        src={item.image}
-                        alt={item.name}/>
-                        <div className="card-body">
-                          <h6>{item.name}</h6>
-                        </div>
-                    </div>
-
-                  </div>
+                {result.map(item => {
+                  return <UserCards key={item.id} {...item}/>
                 })}
               </div>
 
