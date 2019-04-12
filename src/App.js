@@ -13,12 +13,12 @@ class App extends Component {
       list: null,
       data: null,
       isLoaded: false,
-      name: null,
-      change: null,
-      asc: false,
-      desc: false,
-      alien: false,
-      human: false,
+      // name: null,
+      // change: null,
+      // asc: false,
+      // desc: false,
+      // alien: false,
+      // human: false,
       currentApiUrl: 'https://rickandmortyapi.com/api/character',
       nextApiUrl: '',
       prevApiData: '',
@@ -51,7 +51,7 @@ class App extends Component {
 
   async componentDidMount() {
     const list = await getList(this.state.currentApiUrl);
-    console.log(list)
+    //console.log(list)
     this.setState({
       list: list.results,
       data: list,
@@ -60,9 +60,14 @@ class App extends Component {
     })
   }
 
-  performSearch = ({ name, change, asc, desc, alien, human }) => {
-    //console.log(change)
-    this.setState({ name, change, asc, desc, alien, human })
+  performSearch = ({name,  change }) => {
+    this.setState({ name, change })
+  }
+  performSort = ({ asc, desc }) => {
+    this.setState({ asc, desc })
+  }
+  performFilter = ({ alien, human }) => {
+    this.setState({ alien, human })
   }
 
   render() {
@@ -70,9 +75,6 @@ class App extends Component {
     const {list, isLoaded, name, change, asc, desc, alien, human} = this.state;
     let result = list;
 
-    if(name || change) {
-      result = list.filter(item => item.name.includes(name || change))
-    }
     if(asc) {
       result = list.sort((a, b) => a.name < b.name ? -1 : 1);
     }
@@ -85,6 +87,10 @@ class App extends Component {
     if(alien) {
       result = list.filter(item => item.species === 'Alien');
     }
+    if(name ||change) {
+      result = list.filter(item => item.name.includes(name || change))
+    }
+    //console.log('result', result);
 
 
     if(!isLoaded) {
@@ -112,7 +118,11 @@ class App extends Component {
                   >
                   Next Page →
                 </button>
-                <SearchFilter handleSearch={this.performSearch} />
+                <SearchFilter
+                  handleSearch={this.performSearch}
+                  handleSort={this.performSort}
+                  handleFilter={this.performFilter}
+                />
               </div>
                 {result.map(item => {
                   return <UserCards key={item.id} {...item}/>

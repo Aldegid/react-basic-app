@@ -2,6 +2,7 @@
   "name": "react-basic-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://aldegid.github.io/react-basic-app/",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "gh-pages": "^2.0.1",

@@ -1,14 +1,12 @@
 import React from "react";
 import "./searchfilter.css";
 
-const SearchFilter = ({ handleChange, handleSearch}) => {
-
+const SearchFilter = ({ handleSort, handleSearch, handleFilter }) => {
   //console.log(handleChange, handleSearch)
 
   const onSubmit = e => {
     e.preventDefault();
     const { elements } = e.target;
-
 
     const value = Array.from(elements).reduce((acc, input) => {
       if (input.name) {
@@ -19,23 +17,39 @@ const SearchFilter = ({ handleChange, handleSearch}) => {
     handleSearch(value);
     //console.log(value);
   };
-  const onChange = (e) => {
-    const form = e.target.closest(".form");
-    const value = Array.from(form).reduce((acc, input) => {
-      if (input.name === 'change') {
-        return { ...acc, [input.name] : input.value}
-      }
-      if (input.checked) {
-        return { ...acc, [input.value]: true };
-      }
-      return acc;
-    }, {});
+  const onChange = e => {
+    const target = e.target;
+    const value = target.name === 'change' ? target.value : ''
 
-    handleSearch(value);
+    handleSearch({
+      [target.name]: value
+    });
+  };
+  const onSort = e => {
+    const target = e.target;
+    const radioState = () => {
+      if(target.checked && target.type === 'radio') {
+        return true
+      }
+    }
+    handleSort({
+      [target.value]: radioState()
+    });
+  };
+  const onFilter = e => {
+    const target = e.target;
+    const radioState = () => {
+      if(target.checked && target.type === 'radio') {
+        return true
+      }
+    }
+    handleFilter({
+      [target.value]: radioState()
+    });
   };
 
   return (
-    <form onSubmit={onSubmit} onChange={onChange} className="form">
+    <form onSubmit={onSubmit} className="form">
       <div className="sort-asc-desc d-inline-flex ml-2 mr-2">
         <div className="form-check form-check-inline m-2">
           <input
@@ -44,6 +58,7 @@ const SearchFilter = ({ handleChange, handleSearch}) => {
             name="inlineRadioOptions"
             id="inlineRadio1"
             value="asc"
+            onChange={onSort}
           />
           <label className="form-check-label" htmlFor="inlineRadio1">
             Sort by Asc
@@ -56,6 +71,7 @@ const SearchFilter = ({ handleChange, handleSearch}) => {
             name="inlineRadioOptions"
             id="inlineRadio2"
             value="desc"
+            onChange={onSort}
           />
           <label className="form-check-label" htmlFor="inlineRadio2">
             Sort by Desc
@@ -70,6 +86,7 @@ const SearchFilter = ({ handleChange, handleSearch}) => {
             name="inlineRadioFilter"
             id="inlineRadio3"
             value="human"
+            onChange={onFilter}
           />
           <label className="form-check-label" htmlFor="inlineRadio3">
             Filter by Human
@@ -82,6 +99,7 @@ const SearchFilter = ({ handleChange, handleSearch}) => {
             name="inlineRadioFilter"
             id="inlineRadio4"
             value="alien"
+            onChange={onFilter}
           />
           <label className="form-check-label" htmlFor="inlineRadio4">
             Filter by Alien
@@ -113,6 +131,7 @@ const SearchFilter = ({ handleChange, handleSearch}) => {
               placeholder="onChange filter by name... "
               aria-label="Recipient's username"
               aria-describedby="button-addon2"
+              onChange={onChange}
             />
           </div>
         </div>
