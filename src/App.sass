@@ -111,7 +111,25 @@ img
 .card-body .list-group-item
   padding: 5px 10px
 
-//preloader styles
+/*animate styles*/
+.item-enter
+  opacity: 0
+
+.item-enter-active
+  opacity: 1
+  transition: opacity 500ms ease-in
+
+.item-exit
+  opacity: 1
+
+.item-exit-active
+  opacity: 0
+  transition: opacity 500ms ease-in
+
+
+/* animate styles end */
+
+/* preloader styles */
 .preloader
   position: fixed
   top: 0
@@ -157,7 +175,10 @@ img
   100%
     transform: scale(1)
     @include opacity(100)
-//button
+
+/* preloader styles end*/
+
+/* button styles */
 .button
   display: inline-block
   border: none
@@ -201,9 +222,9 @@ img
   &:disabled
     background-color: lighten(#777, 10%)
     cursor: auto
-//button
+/* button styles end*/
 
-
+/* custom radio styles */
 [type="radio"]:checked,
 [type="radio"]:not(:checked)
     position: absolute
@@ -253,6 +274,8 @@ img
   opacity: 1
   -webkit-transform: scale(1)
   transform: scale(1)
+
+/* custom radio end */
 
 /* media rules*/
 

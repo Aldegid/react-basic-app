@@ -3,7 +3,6 @@ import './App.sass';
 import { getList } from './api';
 import UserCards from './components/UserCards/UserCards';
 import SearchFilter from './components/SearchFilter/SearchFilter';
-//import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
   constructor(props) {
@@ -93,7 +92,6 @@ class App extends Component {
       nextApiUrl
     } = this.state;
     let result = list;
-    //console.log(this.state);
 
     if (sortAscDesc) {
       result = this.sortPersons(list, sortAscDesc);
@@ -161,7 +159,7 @@ class App extends Component {
             {result.length === 0 ? (
               <div className='not-found'>
                 Oops, Nothing found{' '}
-                <span role='img' aria-label=''>
+                <span role='img' aria-label='img'>
                   😱
                 </span>
               </div>
