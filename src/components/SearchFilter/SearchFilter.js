@@ -2,18 +2,7 @@ import React from "react";
 import "./searchfilter.css";
 
 const SearchFilter = ({ handleSort, handleSearch, handleFilter }) => {
-  const onSubmit = e => {
-    e.preventDefault();
-    const { elements } = e.target;
 
-    const value = Array.from(elements).reduce((acc, input) => {
-      if (input.name) {
-        return { ...acc, [input.name]: input.value };
-      }
-      return acc;
-    }, {});
-    handleSearch(value);
-  };
   const onChange = e => {
     const target = e.target;
     const value = target.name === "change" ? target.value : "";
@@ -26,34 +15,35 @@ const SearchFilter = ({ handleSort, handleSearch, handleFilter }) => {
     const target = e.target;
     const radioState = () => {
       if (target.checked && target.type === "radio") {
-        return true;
+        return target.value;
       }
     };
     handleSort({
-      [target.value]: radioState()
+      [target.name]: radioState()
     });
   };
   const onFilter = e => {
     const target = e.target;
     const radioState = () => {
       if (target.checked && target.type === "radio") {
-        return true;
+        console.log(target.name);
+        return target.value;
       }
     };
     handleFilter({
-      [target.value]: radioState()
+      [target.name]: radioState()
     });
   };
 
   return (
-    <form onSubmit={onSubmit} className="form__main">
+    <form className="form__main">
       <div className="radio-buttons">
         <div className="sort-asc-desc">
           <div className="form-check">
             <input
               className="form-check-input"
               type="radio"
-              name="inlineRadioOptions"
+              name="sortAscDesc"
               id="inlineRadio1"
               value="asc"
               onChange={onSort}
@@ -66,7 +56,7 @@ const SearchFilter = ({ handleSort, handleSearch, handleFilter }) => {
             <input
               className="form-check-input"
               type="radio"
-              name="inlineRadioOptions"
+              name="sortAscDesc"
               id="inlineRadio2"
               value="desc"
               onChange={onSort}
@@ -81,7 +71,7 @@ const SearchFilter = ({ handleSort, handleSearch, handleFilter }) => {
             <input
               className="form-check-input"
               type="radio"
-              name="inlineRadioFilter"
+              name="filterSpecies"
               id="inlineRadio3"
               value="human"
               onChange={onFilter}
@@ -94,7 +84,7 @@ const SearchFilter = ({ handleSort, handleSearch, handleFilter }) => {
             <input
               className="form-check-input"
               type="radio"
-              name="inlineRadioFilter"
+              name="filterSpecies"
               id="inlineRadio4"
               value="alien"
               onChange={onFilter}
@@ -110,21 +100,8 @@ const SearchFilter = ({ handleSort, handleSearch, handleFilter }) => {
         <input
           type="text"
           className="form-control"
-          name="name"
-          placeholder="onSubmit filter by name... "
-          aria-label="Recipient's username"
-          aria-describedby="button-addon2"
-        />
-        <div className="input-group">
-          <button className="button">Button</button>
-        </div>
-      </div>
-      <div className="input-group">
-        <input
-          type="text"
-          className="form-control"
           name="change"
-          placeholder="onChange filter by name... "
+          placeholder="search by name... "
           aria-label="Recipient's username"
           aria-describedby="button-addon2"
           onChange={onChange}

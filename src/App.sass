@@ -2,9 +2,11 @@
 ::placeholder
   color: #8FA2BA
   font-size: 16px
-  padding-left: 15px
   font-family: Consolas, sans-serif
   font-style: italic
+
+body
+  font-family: 'Raleway', sans-serif
 
 .App
   text-align: center
@@ -29,6 +31,20 @@
   display: flex
   justify-content: space-between
 
+.users-wrap
+  display: flex
+  margin: auto
+  transition: all .25s ease
+
+.not-found
+  color: tomato
+  font-size: 50px
+  align-self: center
+  font-weight: bold
+  padding: 50px 30px
+  border-radius: 10px
+  margin: 0 15px
+
 .users
   display: flex
   flex-wrap: wrap
@@ -52,6 +68,8 @@
   border: none
   border-radius: 7px
   margin: 25px 0
+  box-sizing: border-box
+  padding-left: 15px
 
 .radio-buttons
   display: flex
@@ -79,6 +97,7 @@ img
 
 .card__header
   margin: 0
+  color: tomato
 .list-item
   margin: 5px 0
 
@@ -240,6 +259,11 @@ img
 @media screen and (max-width: 980px)
   .main-section
     flex-direction: column
+
+@media screen and (max-width: 768px)
+  .not-found
+    font-size: 34px
+    text-align: center
 
 @media screen and (max-width: 500px)
   .users .user

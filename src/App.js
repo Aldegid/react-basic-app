@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import "./App.sass";
-import { getList } from "./api";
-import UserCards from "./components/UserCards/UserCards";
-import SearchFilter from "./components/SearchFilter/SearchFilter";
+import React, { Component } from 'react';
+import './App.sass';
+import { getList } from './api';
+import UserCards from './components/UserCards/UserCards';
+import SearchFilter from './components/SearchFilter/SearchFilter';
 //import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
@@ -10,17 +10,14 @@ class App extends Component {
     super(props);
     this.state = {
       list: null,
-      data: null,
+      filterSpecies: null,
+      sortAscDesc: null,
       isLoaded: false,
-      name: null,
       change: null,
-      asc: false,
-      desc: false,
-      alien: false,
-      human: false,
-      currentApiUrl: "https://rickandmortyapi.com/api/character",
-      nextApiUrl: "",
-      prevApiData: ""
+      notFound: null,
+      currentApiUrl: 'https://rickandmortyapi.com/api/character',
+      nextApiUrl: '',
+      prevApiUrl: ''
     };
   }
 
@@ -28,19 +25,19 @@ class App extends Component {
     getList(this.state.nextApiUrl).then(data => {
       this.setState({
         list: data.results,
-        data: data,
         nextApiUrl: data.info.next,
-        prevApiData: data.info.prev
+        prevApiUrl: data.info.prev
       });
     });
   };
+
   handleClickPrev = () => {
-    getList(this.state.prevApiData).then(data => {
+    getList(this.state.prevApiUrl).then(data => {
       this.setState({
         list: data.results,
         data: data,
         nextApiUrl: data.info.next,
-        prevApiData: data.info.prev
+        prevApiUrl: data.info.prev
       });
     });
   };
@@ -55,19 +52,29 @@ class App extends Component {
     });
   }
 
-  performSearch = ({ name, change }) => {
-    this.setState({ name, change });
+  performSearch = ({ change }) => {
+    this.setState({ change });
   };
-  performSort = ({ asc, desc }) => {
-    this.setState({ asc, desc });
+
+  performSort = ({ sortAscDesc }) => {
+    this.setState({ sortAscDesc });
   };
-  performFilter = ({ alien, human }) => {
-    this.setState({ alien, human });
+
+  performFilter = ({ filterSpecies }) => {
+    this.setState({ filterSpecies });
   };
 
   sortByAsc = list => list.sort((a, b) => (a.name < b.name ? -1 : 1));
 
   sortByDesc = list => list.sort((a, b) => (a.name < b.name ? 1 : -1));
+
+  sortPersons = (list, state) => {
+    if (state === 'desc') {
+      return list.sort((a, b) => (a.name < b.name ? 1 : -1));
+    } else {
+      return list.sort((a, b) => (a.name < b.name ? -1 : 1));
+    }
+  };
 
   filterByName = (list, name) => list.filter(item => item.name.includes(name));
 
@@ -78,61 +85,66 @@ class App extends Component {
     const {
       list,
       isLoaded,
-      name,
+      notFound,
       change,
-      asc,
-      desc,
-      alien,
-      human
+      sortAscDesc,
+      filterSpecies,
+      prevApiUrl,
+      nextApiUrl
     } = this.state;
     let result = list;
+    //console.log(this.state);
 
-    if (asc) {
-      result = this.sortByAsc(list);
+    if (sortAscDesc) {
+      result = this.sortPersons(list, sortAscDesc);
     }
-    if (desc) {
-      result = this.sortByDesc(list);
+
+    if (filterSpecies) {
+      result =
+        filterSpecies === 'human'
+          ? this.filterBySpecies(list, 'Human')
+          : this.filterBySpecies(list, 'Alien');
     }
-    if (human) {
-      result = this.filterBySpecies(list, "Human");
-    }
-    if (alien) {
-      result = this.filterBySpecies(list, "Alien");
-    }
+
     if (change) {
       result = this.filterByName(list, change);
-    }
-    if (name) {
-      result = this.filterByName(list, name);
     }
 
     if (!isLoaded) {
       return (
-        <div className="preloader">
-          <div className="pulse" />
+        <div className='preloader'>
+          <div className='pulse' />
         </div>
       );
     }
+    if (notFound) {
+      return (
+        <div className='preloader'>
+          <div className='pulse' />
+        </div>
+      );
+    }
+
     return (
-      <div className="container">
-        <section className="main-section">
-          <aside className="filter">
-          <div className="buttons-group">
-            <button
-                className="button"
+      <div className='container'>
+        <section className='main-section'>
+          <aside className='filter'>
+            <div className='buttons-group'>
+              <button
+                className='button'
                 onClick={this.handleClickPrev}
-                disabled={!this.state.prevApiData}
+                disabled={!prevApiUrl}
               >
                 ← Prev Page
               </button>
               <button
-                className="button"
+                className='button'
                 onClick={this.handleClickNext}
-                disabled={!this.state.nextApiUrl}
+                disabled={!nextApiUrl}
               >
                 Next Page →
               </button>
-          </div>
+            </div>
 
             <SearchFilter
               handleSearch={this.performSearch}
@@ -140,10 +152,20 @@ class App extends Component {
               handleFilter={this.performFilter}
             />
           </aside>
-          <div className="users">
-            {result.map(item => {
-              return <UserCards key={item.id} {...item} />;
-            })}
+          <div className='users-wrap'>
+            <div className='users'>
+              {result.map(item => {
+                return <UserCards key={item.id} {...item} />;
+              })}
+            </div>
+            {result.length === 0 ? (
+              <div className='not-found'>
+                Oops, Nothing found{' '}
+                <span role='img' aria-label=''>
+                  😱
+                </span>
+              </div>
+            ) : null}
           </div>
         </section>
       </div>
