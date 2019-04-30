@@ -1,13 +1,13 @@
 {
-  "main.css": "/react-basic-app/static/css/main.f4777e6a.chunk.css",
-  "main.js": "/react-basic-app/static/js/main.24f6d48f.chunk.js",
-  "main.js.map": "/react-basic-app/static/js/main.24f6d48f.chunk.js.map",
+  "main.css": "/react-basic-app/static/css/main.1e431125.chunk.css",
+  "main.js": "/react-basic-app/static/js/main.5842b9fd.chunk.js",
+  "main.js.map": "/react-basic-app/static/js/main.5842b9fd.chunk.js.map",
   "runtime~main.js": "/react-basic-app/static/js/runtime~main.221a4c2a.js",
   "runtime~main.js.map": "/react-basic-app/static/js/runtime~main.221a4c2a.js.map",
-  "static/js/2.df792c0c.chunk.js": "/react-basic-app/static/js/2.df792c0c.chunk.js",
-  "static/js/2.df792c0c.chunk.js.map": "/react-basic-app/static/js/2.df792c0c.chunk.js.map",
+  "static/js/2.5dc14ff7.chunk.js": "/react-basic-app/static/js/2.5dc14ff7.chunk.js",
+  "static/js/2.5dc14ff7.chunk.js.map": "/react-basic-app/static/js/2.5dc14ff7.chunk.js.map",
   "index.html": "/react-basic-app/index.html",
-  "precache-manifest.725a39292a53d33b96b434c9cbdb6b96.js": "/react-basic-app/precache-manifest.725a39292a53d33b96b434c9cbdb6b96.js",
+  "precache-manifest.0b759de0aa58bda038ed14ad6ad67837.js": "/react-basic-app/precache-manifest.0b759de0aa58bda038ed14ad6ad67837.js",
   "service-worker.js": "/react-basic-app/service-worker.js",
-  "static/css/main.f4777e6a.chunk.css.map": "/react-basic-app/static/css/main.f4777e6a.chunk.css.map"
+  "static/css/main.1e431125.chunk.css.map": "/react-basic-app/static/css/main.1e431125.chunk.css.map"
 }
